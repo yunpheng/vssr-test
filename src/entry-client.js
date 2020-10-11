@@ -1,8 +1,8 @@
-import { createApp } from './app';
-let { app, router, store } = createApp();
+import { createApp } from './app'
+let { app, router, store } = createApp()
 
 if (window.__INITIAL_STATE__) {
-	store.replateState(window.__INITIAL_STATE__);
+  store.replaceState(window.__INITIAL_STATE__)
 }
 
 router.onReady(() => {
@@ -18,25 +18,29 @@ router.onReady(() => {
     // 所以我们对比他们，找出两个匹配列表的差异组件
     let diffed = false
     const activated = matched.filter((c, i) => {
-      return diffed || (diffed = (prevMatched[i] !== c) )
+      return diffed || (diffed = prevMatched[i] !== c)
     })
 
     if (!activated.length) {
-      return next();
+      return next()
     }
 
     // 这里如果有加载指示器 (loading indicator)，就触发
-    Promise.all(activated.map(c => {
-      if (c.asyncData) {
-        return c.asyncData({store, router: to})
-      }
-    })).then(() => {
-      // 停止加载指示器(loading indicator)
-      next()
-    }).then(next())
+    Promise.all(
+      activated.map((c) => {
+        if (c.asyncData) {
+          return c.asyncData({ store, router: to })
+        }
+      })
+    )
+      .then(() => {
+        // 停止加载指示器(loading indicator)
+        next()
+      })
+      .then(next())
   })
-	app.$mount('#app');
-});
+  app.$mount('#app')
+})
 
 // const createApp = require('./app.js');
 // let { app, router } = createApp({});
