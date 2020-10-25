@@ -4,6 +4,19 @@
 </template>
 
 <script>
+export default {
+  asyncData({ store, route }) {
+    // 触发 action 后，会返回 Promise
+    return store.dispatch('fetchItem', route.params.id)
+  },
+  computed: {
+    // 从 store 的 state 对象中的获取 item。
+    item() {
+      return this.$store.state.items[this.$route.params.id]
+    },
+  },
+}
+
 // Vue.mixin({
 //   beforeMount () {
 //     const { asyncData } = this.$options
@@ -31,19 +44,6 @@
 //     }
 //   }
 // })
-
-export default {
-  asyncData({ store, route }) {
-    // 触发 action 后，会返回 Promise
-    return store.dispatch("fetchItem", route.params.id);
-  },
-  computed: {
-    // 从 store 的 state 对象中的获取 item。
-    item() {
-      return this.$store.state.items[this.$route.params.id];
-    },
-  },
-};
 
 // // 在这里导入模块，而不是在 `store/index.js` 中
 // import fooStoreModule from '../store/modules/foo'
