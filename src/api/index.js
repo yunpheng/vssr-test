@@ -1,1 +1,6 @@
-export async function fetchItem(params) {}
+export async function fetchItem(params) {
+  return {
+    title: 'item',
+    content: 'test item',
+  }
+}

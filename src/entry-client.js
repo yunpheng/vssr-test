@@ -24,12 +24,11 @@ router.onReady(() => {
     if (!activated.length) {
       return next()
     }
-
     // 这里如果有加载指示器 (loading indicator)，就触发
     Promise.all(
       activated.map((c) => {
         if (c.asyncData) {
-          return c.asyncData({ store, router: to })
+          return c.asyncData({ store, route: to })
         }
       })
     )
