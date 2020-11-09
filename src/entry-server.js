@@ -19,9 +19,9 @@ export default (context) => {
 
       // 对所有匹配的路由组件调用 `asyncDate()`
       Promise.all(
-        matchedComponents.map((Component) => {
-          if (Component.asyncData) {
-            return Component.asyncData({ store, route: router.currentRouter })
+        matchedComponents.map((component) => {
+          if (component.asyncData) {
+            return component.asyncData({ store, route: router.currentRouter })
           }
         })
       )

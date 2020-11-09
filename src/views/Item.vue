@@ -1,10 +1,10 @@
 <template>
   <div>
     <div>
-      <span>title：</span><span>{{ item.title }}</span>
+      <span>title: </span><span>{{ item.title }}</span>
     </div>
     <div>
-      <span>content：</span><span>{{ item.content }}</span>
+      <span>content: </span><span>{{ item.content }}</span>
     </div>
   </div>
 </template>
@@ -16,6 +16,33 @@ export default {
     console.log('route :>> ', route)
     // 触发 action 后，会返回 Promise
     return store.dispatch('fetchItem', route.params.id)
+  },
+  beforeMount() {
+    const { asyncData } = this.$options
+    console.log('--beforeMount--this.$options :>> ', this.$options)
+    if (asyncData) {
+      // 将获取数据操作分配给 promise
+      // 以便在组件中，我们可以在数据准备就绪后
+      // 通过运行 `this.dataPromise.then(...)` 来执行其他任务
+      this.dataPromise = asyncData({
+        store: this.$store,
+        route: this.$route,
+      })
+    }
+  },
+  beforeRouteUpdate(to, from, next) {
+    const { asyncData } = this.$options
+    console.log('--beforeRouteUpdate--this.$options :>> ', this.$options)
+    if (asyncData) {
+      asyncData({
+        store: this.$store,
+        route: to,
+      })
+        .then(next)
+        .catch(next)
+    } else {
+      next()
+    }
   },
   computed: {
     // 从 store 的 state 对象中的获取 item。
